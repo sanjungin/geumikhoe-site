@@ -151,12 +151,22 @@
             border-bottom: none;
         }
 
-        /* Main Slider */
+        /* Main Slider — 시원한 히어로 높이 (기존 500px 대비 2배 이상) */
         .slider {
             margin-top: 90px;
             position: relative;
-            height: 500px;
+            height: 85vh;
+            min-height: 1000px;
+            max-height: 1200px;
             overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .slider {
+                min-height: 560px;
+                height: 70vh;
+                max-height: none;
+            }
         }
 
         .slide {
@@ -192,7 +202,7 @@
         }
 
         .slide-content h2 {
-            font-size: 2.2rem;
+            font-size: clamp(1.6rem, 3.5vw, 2.8rem);
             font-weight: 700;
             color: var(--gold-primary);
             margin-bottom: 1rem;
@@ -200,13 +210,13 @@
         }
 
         .slide-content p {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.35rem);
             color: var(--white);
             line-height: 1.8;
         }
 
         .slide-badge {
-            max-width: 200px;
+            max-width: clamp(180px, 22vw, 280px);
             margin: 0 auto 1.5rem;
             border-radius: 50%;
             border: 4px solid var(--gold-primary);
@@ -687,7 +697,7 @@
         <div class="slide active" style="background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-secondary) 100%);">
             <div class="slide-overlay" style="background: transparent;">
                 <div class="slide-content">
-                    <div class="slide-badge" style="max-width: 220px;">
+                    <div class="slide-badge">
                         <img src="assets/logo.png" alt="해군해병대 항공 흉장">
                     </div>
                     <h2>금익회에 오신 것을 환영합니다</h2>
@@ -773,7 +783,7 @@
                     <h3>🎗️ 경조사</h3>
                     <div class="list-item"><span class="title">○○○ 회원 장남 결혼</span><span class="date">03.28</span></div>
                     <div class="list-item"><span class="title">○○○ 회원 부친상 알림</span><span class="date">03.15</span></div>
-                    <div class="list-item"><span class="title">○○○ 회원 자녀 출산</span><span class="date">03.08</span></div>
+                    <div class="list-item"><span class="title">○○○ 회원 차녀 결혼</span><span class="date">03.08</span></div>
                     <span class="more-link">더보기 →</span>
                 </a>
                 <a href="#event-calendar" class="guide-card guide-card-calendar" id="event-calendar">
