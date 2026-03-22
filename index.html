@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>금익회 - 해군해병대 항공장교전우회</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -33,6 +33,11 @@
             color: var(--white);
             background: var(--navy-deep);
             line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body.menu-open {
+            overflow: hidden;
         }
 
         /* Header */
@@ -40,9 +45,11 @@
             background: linear-gradient(180deg, var(--navy-secondary) 0%, var(--navy-deep) 100%);
             border-bottom: 3px solid var(--gold-primary);
             padding: 0 2rem;
+            padding-top: max(0px, env(safe-area-inset-top));
             position: fixed;
             width: 100%;
             top: 0;
+            left: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
@@ -53,13 +60,43 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 0.75rem;
             padding: 1rem 0;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--gold-primary);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.2);
+            color: var(--gold-primary);
+            font-size: 1.35rem;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .menu-toggle:active {
+            background: rgba(255,215,0,0.15);
         }
 
         .logo-wrap {
             display: flex;
             align-items: center;
             gap: 1rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        @media (min-width: 992px) {
+            .logo-wrap {
+                flex: 0 1 auto;
+            }
         }
 
         .logo-badge {
@@ -90,9 +127,10 @@
         }
 
         /* Navigation */
-        nav {
+        .main-nav {
             display: flex;
             gap: 0.5rem;
+            align-items: center;
         }
 
         .nav-item {
@@ -114,9 +152,11 @@
             background: rgba(255,215,0,0.1);
         }
 
-        .nav-item:hover .submenu {
-            opacity: 1;
-            visibility: visible;
+        @media (hover: hover) and (pointer: fine) {
+            .nav-item:hover .submenu {
+                opacity: 1;
+                visibility: visible;
+            }
         }
 
         .submenu {
@@ -161,11 +201,140 @@
             overflow: hidden;
         }
 
+        @media (max-width: 991px) {
+            header {
+                padding: 0 1rem;
+            }
+
+            .header-inner {
+                flex-wrap: nowrap;
+                padding: 0.65rem 0;
+            }
+
+            .logo-badge {
+                width: 48px;
+                height: 48px;
+            }
+
+            .logo-text h1 {
+                font-size: 1.15rem;
+            }
+
+            .logo-text span {
+                font-size: 0.7rem;
+                display: block;
+                line-height: 1.25;
+                max-width: 11em;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main-nav {
+                display: none;
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: calc(72px + env(safe-area-inset-top, 0px));
+                bottom: 0;
+                height: calc(100dvh - 72px - env(safe-area-inset-top, 0px));
+                max-height: calc(100vh - 72px - env(safe-area-inset-top, 0px));
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                background: linear-gradient(180deg, var(--navy-secondary) 0%, var(--navy-deep) 100%);
+                border-top: 1px solid var(--gold-dark);
+                padding: 0.5rem 0 1.5rem;
+                z-index: 1001;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            }
+
+            .main-nav.is-open {
+                display: flex;
+            }
+
+            .nav-item > a {
+                padding: 0.9rem 1.25rem;
+                font-size: 1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+            }
+
+            .nav-item.menu-has-sub > a::after {
+                content: ' ▼';
+                font-size: 0.65rem;
+                opacity: 0.8;
+            }
+
+            .nav-item.menu-has-sub.submenu-open > a::after {
+                content: ' ▲';
+            }
+
+            .submenu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                border: none;
+                border-bottom: 1px solid rgba(255,215,0,0.2);
+                box-shadow: none;
+            }
+
+            .nav-item.submenu-open .submenu {
+                display: block;
+            }
+
+            .submenu a {
+                padding: 0.75rem 1.25rem 0.75rem 2rem;
+                font-size: 0.95rem;
+                background: rgba(0,0,0,0.15);
+            }
+
+            body.menu-open .menu-toggle {
+                border-color: var(--gold-light);
+                color: var(--gold-light);
+            }
+        }
+
         @media (max-width: 768px) {
             .slider {
-                min-height: 560px;
-                height: 70vh;
-                max-height: none;
+                margin-top: calc(72px + env(safe-area-inset-top, 0px));
+                min-height: 280px;
+                height: 48vh;
+                max-height: 520px;
+            }
+
+            .slide-content {
+                padding: 1rem 1.25rem;
+                max-height: 100%;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            main {
+                margin: 1.5rem auto;
+                padding: 0 1rem;
+            }
+
+            .intro-section {
+                padding: 2rem 1rem;
+            }
+
+            .guide-card-list .list-item .title {
+                white-space: normal;
+                line-height: 1.35;
+            }
+
+            .guide-card-list .list-item {
+                flex-wrap: wrap;
+            }
+
+            .guide-calendar-wrap {
+                height: auto;
+                min-height: 200px;
+                max-height: 260px;
             }
         }
 
@@ -650,8 +819,10 @@
                 </div>
             </div>
 
-            <nav>
-                <div class="nav-item">
+            <button type="button" class="menu-toggle" id="menuToggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
+
+            <nav class="main-nav" id="mainNav" aria-label="주 메뉴">
+                <div class="nav-item menu-has-sub">
                     <a href="#">회원공간</a>
                     <div class="submenu">
                         <a href="#">인사말</a>
@@ -661,7 +832,7 @@
                         <a href="#signup">회원가입</a>
                     </div>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item menu-has-sub">
                     <a href="#">소식/행사</a>
                     <div class="submenu">
                         <a href="#notice">공지사항</a>
@@ -671,14 +842,14 @@
                         <a href="#gallery">갤러리</a>
                     </div>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item menu-has-sub">
                     <a href="#">자료실</a>
                     <div class="submenu">
                         <a href="#newsletter">회보발간</a>
                         <a href="#">회칙</a>
                     </div>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item menu-has-sub">
                     <a href="#">지원사업</a>
                     <div class="submenu">
                         <a href="#">회원지원</a>
@@ -900,6 +1071,65 @@
             });
 
             slideInterval = setInterval(nextSlide, 5000);
+
+            /* 모바일: 햄버거 메뉴 & 터치용 2차 메뉴 */
+            const menuToggle = document.getElementById('menuToggle');
+            const mainNav = document.getElementById('mainNav');
+            const mqMobile = window.matchMedia('(max-width: 991px)');
+
+            function closeMobileMenu() {
+                mainNav.classList.remove('is-open');
+                document.body.classList.remove('menu-open');
+                if (menuToggle) {
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    menuToggle.setAttribute('aria-label', '메뉴 열기');
+                    menuToggle.textContent = '☰';
+                }
+                mainNav.querySelectorAll('.nav-item.submenu-open').forEach(function (el) {
+                    el.classList.remove('submenu-open');
+                });
+            }
+
+            function openMobileMenu() {
+                mainNav.classList.add('is-open');
+                document.body.classList.add('menu-open');
+                menuToggle.setAttribute('aria-expanded', 'true');
+                menuToggle.setAttribute('aria-label', '메뉴 닫기');
+                menuToggle.textContent = '✕';
+            }
+
+            if (menuToggle && mainNav) {
+                menuToggle.addEventListener('click', function () {
+                    if (mainNav.classList.contains('is-open')) {
+                        closeMobileMenu();
+                    } else {
+                        openMobileMenu();
+                    }
+                });
+
+                mainNav.querySelectorAll('.nav-item.menu-has-sub > a').forEach(function (link) {
+                    link.addEventListener('click', function (e) {
+                        if (!mqMobile.matches) return;
+                        e.preventDefault();
+                        var item = link.closest('.nav-item');
+                        var willOpen = !item.classList.contains('submenu-open');
+                        mainNav.querySelectorAll('.nav-item.menu-has-sub').forEach(function (other) {
+                            if (other !== item) other.classList.remove('submenu-open');
+                        });
+                        item.classList.toggle('submenu-open', willOpen);
+                    });
+                });
+
+                mainNav.querySelectorAll('.submenu a, .nav-item:not(.menu-has-sub) > a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        if (mqMobile.matches) closeMobileMenu();
+                    });
+                });
+            }
+
+            mqMobile.addEventListener('change', function (e) {
+                if (!e.matches) closeMobileMenu();
+            });
         });
     </script>
 </body>
